@@ -63,9 +63,36 @@ var Player = function() {
   this.sprite = 'images/char-boy.png';
 }
 
+/**
+ * @param {Object} initLoc the x and y location of the player
+ */
+Player.prototype.update = function({ x = 2 * 101, y = 5 * 83 - 20.75} = {}) {
+  // keep player within the grid even if they try to leave
+  this.x = x < 0 || x >= 5 * 101 ? this.x : x;
+  this.y = y < -20.75 || y >= 6 * 83 - 20.75 ? this.y : y;
+}
+
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+
+Player.prototype.handleInput = function(direction) {
+  switch (direction) {
+    case 'left':
+      this.update({ x: this.x - 101, y: this.y});
+      break;
+    case 'right':
+      this.update({ x: this.x + 101, y: this.y});
+      break;
+    case 'up':
+      this.update({ x: this.x, y: this.y - 83});
+      break;
+    case 'down':
+      this.update({ x: this.x, y: this.y + 83});
+      break;
+    default:
+  }
+};
 
 
 // Now instantiate your objects.
