@@ -51,6 +51,21 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function() {
+  // player always spawn in the third column
+  this.x = 2 * 101;
+
+  // player always spawns in the fifth row
+  // '- 20.75' is necessary to vertically center the character on the block
+  this.y = 5 * 83 - 20.75;
+
+  // player sprite
+  this.sprite = 'images/char-boy.png';
+}
+
+Player.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
 
 // Now instantiate your objects.
@@ -65,6 +80,8 @@ function spawnNewEnemy() {
   allEnemies.push(new Enemy());
   setTimeout(spawnNewEnemy, 500);
 }
+
+const player = new Player();
 
 
 // This listens for key presses and sends the keys to your
