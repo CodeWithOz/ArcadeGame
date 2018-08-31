@@ -69,17 +69,10 @@ var Engine = (function(global) {
     }
 
     /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * of the functions which may need to update entity's data.
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -89,7 +82,30 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
+            checkCollisions(enemy, player);
         });
+    }
+
+    function checkCollisions(enemy, player) {
+      // exit if enemy and player are not on the same row
+      if (enemy.y !== player.y) return;
+
+      // enemy moves from left to right
+      // collision happens when any part of enemy and player overlap
+      // x-position represents the top-left corner
+      const enemyRightEdge = enemy.x + 101;
+
+      // player image's width is greater than that of the actual icon
+      // so eat into the image a little bit (about 35 pixels)
+      const playerLeftEdge = player.x + 35;
+      const playerRightEdge = player.x + 101 - 35;
+
+      // exit if enemy and player do not overlap
+      if (enemyRightEdge < playerLeftEdge || enemy.x > playerRightEdge) return;
+
+      // collision has happened
+      // so reset the player
+      player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -144,9 +160,11 @@ var Engine = (function(global) {
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
+         * Then check if a collision with the player has occurred
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
+            checkCollisions(enemy, player);
         });
 
         player.render();
