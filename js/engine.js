@@ -87,18 +87,17 @@ var Engine = (function(global) {
     }
 
     function checkCollisions(enemy, player) {
+      const { colWidth, rowHeight, rowOffset, imagePadding } = dimensions;
       // exit if enemy and player are not on the same row
       if (enemy.y !== player.y) return;
 
       // enemy moves from left to right
       // collision happens when any part of enemy and player overlap
       // x-position represents the top-left corner
-      const enemyRightEdge = enemy.x + 101;
+      const enemyRightEdge = enemy.x + colWidth;
 
-      // player image's width is greater than that of the actual icon
-      // so eat into the image a little bit (about 35 pixels)
-      const playerLeftEdge = player.x + 35;
-      const playerRightEdge = player.x + 101 - 35;
+      const playerLeftEdge = player.x + imagePadding;
+      const playerRightEdge = player.x + colWidth - imagePadding;
 
       // exit if enemy and player do not overlap
       if (enemyRightEdge < playerLeftEdge || enemy.x > playerRightEdge) return;
@@ -146,7 +145,11 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(
+                  Resources.get(rowImages[row]),
+                  col * dimensions.colWidth,
+                  row * dimensions.rowHeight
+                );
             }
         }
 

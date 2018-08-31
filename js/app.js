@@ -1,23 +1,50 @@
+// module for revealing dimensions
+const dimensions = (function() {
+  const _colWidth = 101,
+    _rowHeight = 83,
+    // the row offset is necessary to vertically center icons because
+    // they have some space above them in the image files
+    _rowOffset = _rowHeight * 0.25,
+    // player image's width is greater than that of the actual icon
+    // this is about 35 pixels on each side
+    _imagePadding = 35;
+
+  return {
+    get colWidth() {
+      return _colWidth;
+    },
+    get rowHeight() {
+      return _rowHeight;
+    },
+    get rowOffset() {
+      return _rowOffset;
+    },
+    get imagePadding() {
+      return _imagePadding;
+    }
+  };
+})();
+
 // Enemies our player must avoid
 var Enemy = function() {
+    const { colWidth, rowHeight, rowOffset } = dimensions;
+
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // the initial x-location of the enemy
     // all enemies spawn from the first column
-    this.x = -1 * 101;
+    this.x = -1 * colWidth;
     // math explanation
-    // 101 is the column width, see engine.js:137
     // the enemy spawns off the grid, hence the negative multiple
 
     // the initial y-location
     // enemies spawn randomly in the stone rows (rows 1-3)
-    this.y = (Math.floor(Math.random() * 3) + 1) * 83 - 20.75;
+    this.y = (Math.floor(Math.random() * 3) + 1) * rowHeight - rowOffset;
     // math explanation
     // the range is 3 (1-3) but the first value is 1 hence the '+ 1' at the end
-    // row height is 83px, see engine.js:137
     // the image is not centered vertically, it needs to be offset
-    // by 1/4 of the row height, hence the '- 20.75'
+    // by 1/4 of the row height
 
     // speed of 1 - 5 blocks per second
     this.speed = Math.floor(Math.random() * 5) + 1;
@@ -33,11 +60,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * 101 * dt;
+    this.x += this.speed * dimensions.colWidth * dt;
 
     // remove this enemy if it has moved off the canvas
     // this prevents the allEnemies array from growing unchecked
-    if (this.x >= 5 * 101) {
+    if (this.x >= 5 * dimensions.colWidth) {
       const index = allEnemies.indexOf(this);
       allEnemies.splice(index, 1);
     }
@@ -53,11 +80,10 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   // player always spawn in the third column
-  this.x = 2 * 101;
+  this.x = 2 * dimensions.colWidth;
 
   // player always spawns in the fifth row
-  // '- 20.75' is necessary to vertically center the character on the block
-  this.y = 5 * 83 - 20.75;
+  this.y = 5 * dimensions.rowHeight - dimensions.rowOffset;
 
   // player sprite
   this.sprite = 'images/char-boy.png';
@@ -66,10 +92,17 @@ var Player = function() {
 /**
  * @param {Object} initLoc the x and y location of the player
  */
-Player.prototype.update = function({ x = 2 * 101, y = 5 * 83 - 20.75} = {}) {
+Player.prototype.update = function(
+  // destructure the parameter into the necessary properties
+  {
+    x = 2 * dimensions.colWidth,
+    y = 5 * dimensions.rowHeight - dimensions.rowOffset
+  } = {}
+) {
+  const { colWidth, rowHeight, rowOffset } = dimensions;
   // keep player within the grid even if they try to leave
-  this.x = x < 0 || x >= 5 * 101 ? this.x : x;
-  this.y = y < -20.75 || y >= 6 * 83 - 20.75 ? this.y : y;
+  this.x = (x < 0 || x >= 5 * colWidth) ? this.x : x;
+  this.y = (y < 0 * rowHeight - rowOffset || y >= 6 * rowHeight - rowOffset) ? this.y : y;
 }
 
 Player.prototype.render = function() {
@@ -79,16 +112,16 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(direction) {
   switch (direction) {
     case 'left':
-      this.update({ x: this.x - 101, y: this.y});
+      this.update({ x: this.x - dimensions.colWidth, y: this.y});
       break;
     case 'right':
-      this.update({ x: this.x + 101, y: this.y});
+      this.update({ x: this.x + dimensions.colWidth, y: this.y});
       break;
     case 'up':
-      this.update({ x: this.x, y: this.y - 83});
+      this.update({ x: this.x, y: this.y - dimensions.rowHeight});
       break;
     case 'down':
-      this.update({ x: this.x, y: this.y + 83});
+      this.update({ x: this.x, y: this.y + dimensions.rowHeight});
       break;
     default:
   }
