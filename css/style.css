@@ -35,6 +35,12 @@ fieldset:not(:last-child) {
   margin-bottom: 1em;
 }
 
+label {
+  /* TODO: add appropriate browser prefixes */
+  display: inline-flex;
+  align-items: center;
+}
+
 button[name="start"] {
   border: 1px solid blue;
   border-radius: 5px;
