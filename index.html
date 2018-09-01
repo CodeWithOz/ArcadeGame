@@ -6,6 +6,59 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- TODO: add blocking overlay when viewport is below a certain width -->
+  <section class="overlay">
+    <section class="game-choices modal">
+      <section class="player-choice">
+        <form class="choices">
+          <fieldset>
+            <legend>Choose your player's icon</legend>
+
+            <label>
+              <input type="radio" name="player" id="boy" value="boy" checked>
+              <img src="images/char-boy.png" alt="boy">
+            </label>
+
+            <label>
+              <input type="radio" name="player" id="cat-girl" value="cat-girl">
+              <img src="images/char-cat-girl.png" alt="cat girl">
+            </label>
+
+            <label>
+              <input type="radio" name="player" id="horn-girl" value="horn-girl">
+              <img src="images/char-horn-girl.png" alt="horn girl">
+            </label>
+
+            <label>
+              <input type="radio" name="player" id="pink-girl" value="pink-girl">
+              <img src="images/char-pink-girl.png" alt="pink girl">
+            </label>
+
+            <label>
+              <input type="radio" name="player" id="princess-girl" value="princess-girl">
+              <img src="images/char-princess-girl.png" alt="princess girl">
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Play a timed game?</legend>
+
+            <label>
+              <input type="radio" name="timed" id="no" value="no" checked>
+              No
+            </label>
+
+            <label>
+              <input type="radio" name="timed" id="yes" value="yes">
+              Yes
+            </label>
+          </fieldset>
+
+          <button type="submit" name="start">Start Game</button>
+        </form>
+      </section>
+    </section>
+  </section>
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engine.js"></script>

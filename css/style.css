@@ -1,3 +1,41 @@
 body {
   text-align: center;
+  font-family: cursive;
+}
+
+.overlay {
+  /* cover the screen */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  /* place it above the canvas, which will be its sibling */
+  z-index: 1;
+
+  background: black; /* fallback background color */
+  background: rgba(0, 0, 0, 0.5);
+
+  /* center the contents */
+  /* TODO: add appropriate browser prefixes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-choices {
+  background: white;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+fieldset:not(:last-child) {
+  /* add spacing beneath each fieldset except the last one */
+  margin-bottom: 1em;
+}
+
+button[name="start"] {
+  border: 1px solid blue;
+  border-radius: 5px;
 }
