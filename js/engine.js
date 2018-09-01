@@ -82,30 +82,7 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
-            checkCollisions(enemy, player);
         });
-    }
-
-    function checkCollisions(enemy, player) {
-      const { colWidth, rowHeight, rowOffset } = dimensions;
-
-      // exit if enemy and player are not on the same row
-      if (enemy.y !== player.y) return;
-
-      // enemy moves from left to right
-      // collision happens when any part of enemy and player overlap
-      // x-position represents the top-left corner
-      const enemyRightEdge = enemy.x + colWidth;
-
-      const playerLeftEdge = player.x + player.horzPad;
-      const playerRightEdge = player.x + colWidth - player.horzPad;
-
-      // exit if enemy and player do not overlap
-      if (enemyRightEdge < playerLeftEdge || enemy.x > playerRightEdge) return;
-
-      // collision has happened
-      // so reset the player
-      player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -172,6 +149,28 @@ var Engine = (function(global) {
         });
 
         player.render();
+    }
+
+    function checkCollisions(enemy, player) {
+      const { colWidth, rowHeight, rowOffset } = dimensions;
+
+      // exit if enemy and player are not on the same row
+      if (enemy.y !== player.y) return;
+
+      // enemy moves from left to right
+      // collision happens when any part of enemy and player overlap
+      // x-position represents the top-left corner
+      const enemyRightEdge = enemy.x + colWidth;
+
+      const playerLeftEdge = player.x + player.horzPad;
+      const playerRightEdge = player.x + colWidth - player.horzPad;
+
+      // exit if enemy and player do not overlap
+      if (enemyRightEdge < playerLeftEdge || enemy.x > playerRightEdge) return;
+
+      // collision has happened
+      // so reset the player
+      player.update();
     }
 
     /* This function does nothing but it could have been a good place to
