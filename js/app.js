@@ -40,8 +40,11 @@ var Enemy = function() {
     // the image is not centered vertically, it needs to be offset
     // by 1/4 of the row height
 
-    // speed of 1 - 5 blocks per second
-    this.speed = Math.floor(Math.random() * 5) + 1;
+    // speed of 2 - 5 blocks per second
+    this.speed = Math.floor(Math.random() * 4) + 2;
+    // math explanation
+    // the lowest allowed value is 2, hence the '+ 2'
+    // there are 4 possible values (2, 3, 4 or 5) hence the '* 4'
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -134,7 +137,7 @@ const allEnemies = [];
 spawnNewEnemy();
 
 function spawnNewEnemy() {
-  // spawn a new enemy 1.5 seconds after the last one was spawned
+  // spawn a new enemy 0.5 seconds after the last one was spawned
   allEnemies.push(new Enemy());
   setTimeout(spawnNewEnemy, 500);
 }
