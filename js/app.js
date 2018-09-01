@@ -4,10 +4,7 @@ const dimensions = (function() {
     _rowHeight = 83,
     // the row offset is necessary to vertically center icons because
     // they have some space above them in the image files
-    _rowOffset = _rowHeight * 0.25,
-    // player image's width is greater than that of the actual icon
-    // this is about 35 pixels on each side
-    _imagePadding = 35;
+    _rowOffset = _rowHeight * 0.25;
 
   return {
     get colWidth() {
@@ -18,9 +15,6 @@ const dimensions = (function() {
     },
     get rowOffset() {
       return _rowOffset;
-    },
-    get imagePadding() {
-      return _imagePadding;
     }
   };
 })();
@@ -87,6 +81,10 @@ var Player = function() {
 
   // player sprite
   this.sprite = 'images/char-boy.png';
+
+  // player image's width is greater than that of the actual icon
+  // this is about 35 pixels on each side
+  this.horzPad = 35;
 }
 
 /**

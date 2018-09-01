@@ -87,7 +87,8 @@ var Engine = (function(global) {
     }
 
     function checkCollisions(enemy, player) {
-      const { colWidth, rowHeight, rowOffset, imagePadding } = dimensions;
+      const { colWidth, rowHeight, rowOffset } = dimensions;
+
       // exit if enemy and player are not on the same row
       if (enemy.y !== player.y) return;
 
@@ -96,8 +97,8 @@ var Engine = (function(global) {
       // x-position represents the top-left corner
       const enemyRightEdge = enemy.x + colWidth;
 
-      const playerLeftEdge = player.x + imagePadding;
-      const playerRightEdge = player.x + colWidth - imagePadding;
+      const playerLeftEdge = player.x + player.horzPad;
+      const playerRightEdge = player.x + colWidth - player.horzPad;
 
       // exit if enemy and player do not overlap
       if (enemyRightEdge < playerLeftEdge || enemy.x > playerRightEdge) return;
