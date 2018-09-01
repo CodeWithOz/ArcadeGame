@@ -110,6 +110,12 @@ Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// use this to update the player's selected icon
+Player.prototype.updateIcon = function(icon) {
+  this.sprite = `images/char-${icon}.png`;
+  this.render();
+};
+
 Player.prototype.handleInput = function(direction) {
   switch (direction) {
     case 'left':
@@ -148,6 +154,19 @@ const player = new Player();
 const choicesForm = document.querySelector('.choices');
 choicesForm.addEventListener('submit', event => {
   event.preventDefault();
+
+  // get the selected player icon
+  let playerChoice;
+  const icons = [...choicesForm.querySelectorAll('input[name="player"]')];
+  for (const icon of icons) {
+    if (icon.checked) {
+      playerChoice = icon.value;
+      break;
+    }
+  }
+  player.updateIcon(playerChoice);
+
+  // TODO: handle time choice
 
   // dismiss choices overlay
   choicesForm.parentElement.parentElement.parentElement.classList.add('hidden');
