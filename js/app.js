@@ -144,6 +144,14 @@ function spawnNewEnemy() {
 
 const player = new Player();
 
+// handle player's game choices
+const choicesForm = document.querySelector('.choices');
+choicesForm.addEventListener('submit', event => {
+  event.preventDefault();
+
+  // dismiss choices overlay
+  choicesForm.parentElement.parentElement.parentElement.classList.add('hidden');
+});
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
