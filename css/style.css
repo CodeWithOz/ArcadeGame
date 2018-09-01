@@ -35,6 +35,11 @@ fieldset:not(:last-child) {
   margin-bottom: 1em;
 }
 
+label,
+input {
+  cursor: pointer;
+}
+
 label {
   /* TODO: add appropriate browser prefixes */
   display: inline-flex;
@@ -44,4 +49,5 @@ label {
 button[name="start"] {
   border: 1px solid blue;
   border-radius: 5px;
+  cursor: pointer;
 }
