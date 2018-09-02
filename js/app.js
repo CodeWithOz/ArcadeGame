@@ -160,6 +160,9 @@ Player.prototype.updateIcon = function(icon) {
 };
 
 Player.prototype.handleInput = function(direction) {
+  // exit if arrow keys are deactivated
+  if (!arrowsActive) return;
+
   switch (direction) {
     case 'left':
       this.update({ x: this.x - dimensions.colWidth, y: this.y});
@@ -301,6 +304,9 @@ function toggleCollectible() {
   }
 }
 
+// regulate when arrow keys can be used
+let arrowsActive = false;
+
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');
 choicesForm.addEventListener('submit', event => {
@@ -321,6 +327,9 @@ choicesForm.addEventListener('submit', event => {
 
   // dismiss choices overlay
   choicesForm.parentElement.parentElement.parentElement.classList.add('hidden');
+
+  // activate arrow keys
+  arrowsActive = true;
 });
 
 // This listens for key presses and sends the keys to your
