@@ -25,17 +25,25 @@ const dimensions = (function() {
 })();
 
 // Enemies our player must avoid
-var Enemy = function() {
+/**
+ * @param {Boolean} ltr direction of enemy's motion
+ */
+var Enemy = function(ltr) {
     const { colWidth, rowHeight, rowOffset } = dimensions;
 
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // the initial x-location of the enemy
-    // all enemies spawn from the first column
-    this.x = -1 * colWidth;
+    // all enemies spawn from the column just off the grid
+    this.x = (ltr ? -1 : 5) * colWidth;
     // math explanation
-    // the enemy spawns off the grid, hence the negative multiple
+    // the enemy spawns off the grid
+    // for ltr, the column on the left edge has an index of -1 (0-indexing)
+    // for rtl, the column on the right edge has an index of 5
+
+    // save its direction
+    this.ltr = ltr;
 
     // the initial y-location
     // enemies spawn randomly in the stone rows (rows 1-3)
@@ -48,12 +56,12 @@ var Enemy = function() {
     // speed of 2 - 5 blocks per second
     this.speed = Math.floor(Math.random() * 4) + 2;
     // math explanation
-    // the lowest allowed value is 2, hence the '+ 2'
-    // there are 4 possible values (2, 3, 4 or 5) hence the '* 4'
+    // lowest allowed value is 2, hence the '+ 2'
+    // 4 possible values (2, 3, 4 or 5) hence the range is 4 thus '* 4'
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    // The image/sprite for our enemies
+    // pick the correct image based on the enemy's direction
+    this.sprite = `images/enemy-bug${this.ltr ? '' : '-reversed'}.png`;
 };
 
 // Update the enemy's position, required method for game
@@ -62,13 +70,21 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * dimensions.colWidth * dt;
-
-    // remove this enemy if it has moved off the canvas
+    // also, remove this enemy if it has moved off the canvas
     // this prevents the allEnemies array from growing unchecked
-    if (this.x >= 5 * dimensions.colWidth) {
-      const index = allEnemies.indexOf(this);
-      allEnemies.splice(index, 1);
+    if (this.ltr) {
+      this.x += this.speed * dimensions.colWidth * dt;
+      if (this.x >= 5 * dimensions.colWidth) {
+        const index = allEnemies.indexOf(this);
+        allEnemies.splice(index, 1);
+      }
+    } else {
+      this.x -= this.speed * dimensions.colWidth * dt;
+      if (this.x <= -1 * dimensions.colWidth) {
+        // checking for -1 ensures that the enemy has gone off the grid completely
+        const index = allEnemies.indexOf(this);
+        allEnemies.splice(index, 1);
+      }
     }
 };
 
@@ -261,9 +277,10 @@ const allEnemies = [];
 spawnNewEnemy();
 
 function spawnNewEnemy() {
-  // spawn a new enemy 0.5 seconds after the last one was spawned
-  allEnemies.push(new Enemy());
-  setTimeout(spawnNewEnemy, 500);
+  // spawn a new enemy 0.25 seconds after the last one was spawned
+  // randomly decide its direction
+  allEnemies.push(new Enemy(Math.random() < 0.5 ? true : false));
+  setTimeout(spawnNewEnemy, 250);
 }
 
 const player = new Player();
