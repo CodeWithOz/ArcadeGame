@@ -4,7 +4,9 @@ const dimensions = (function() {
     _rowHeight = 83,
     // the row offset is necessary to vertically center icons because
     // they have some space above them in the image files
-    _rowOffset = _rowHeight * 0.25;
+    _rowOffset = _rowHeight * 0.25,
+    // row offset for collectibles
+    _collectOffset = 15;
 
   return {
     get colWidth() {
@@ -15,6 +17,9 @@ const dimensions = (function() {
     },
     get rowOffset() {
       return _rowOffset;
+    },
+    get collectOffset() {
+      return _collectOffset;
     }
   };
 })();
@@ -88,7 +93,7 @@ var Player = function() {
   // player image's width is greater than that of the actual icon
   // this is about 35 pixels on each side
   this.horzPad = 35;
-}
+};
 
 /**
  * @param {Object} initLoc the x and y location of the player
@@ -104,11 +109,11 @@ Player.prototype.update = function(
   // keep player within the grid even if they try to leave
   this.x = (x < 0 || x >= 5 * colWidth) ? this.x : x;
   this.y = (y < 0 * rowHeight - rowOffset || y >= 6 * rowHeight - rowOffset) ? this.y : y;
-}
+};
 
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // use this to update the player's selected icon
 Player.prototype.updateIcon = function(icon) {
@@ -134,6 +139,73 @@ Player.prototype.handleInput = function(direction) {
   }
 };
 
+const Collectible = function() {
+  const { colWidth, rowHeight, rowOffset } = dimensions;
+
+  // don't spawn yet
+  this.x;
+  this.y;
+
+  this.shown = false;
+
+  this.type;
+  this.sprite;
+};
+
+Collectible.prototype.setSprite = function() {
+  const spriteTypes = ['star', 'key', 'heart'];
+  const spriteMap = {
+    star: 'images/Star.png',
+    key: 'images/Key.png',
+    heart: 'images/Heart.png'
+  };
+
+  this.type = spriteTypes[Math.floor(Math.random() * 3)];
+  this.sprite = spriteMap[this.type];
+};
+
+/**
+ * @param {Object} initLoc the x and y location of the player
+ */
+Collectible.prototype.update = function(
+  // destructure the parameter into the necessary properties
+  {
+    // default position is off the grid
+    x = -1 * dimensions.colWidth,
+    y = -1 * dimensions.rowHeight - dimensions.collectOffset
+  } = {}
+) {
+  this.x = x;
+  this.y = y;
+};
+
+Collectible.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Collectible.prototype.hide = function() {
+  // reset its position to the default
+  this.update();
+
+  this.render();
+  this.shown = false;
+};
+
+Collectible.prototype.show = function() {
+  const { colWidth, rowHeight, collectOffset } = dimensions;
+
+  // randomly reassign the sprite
+  this.setSprite();
+
+  // randomly reassign its position within the grid
+  this.update({
+    x: Math.floor(Math.random() * 5) * colWidth,
+    y: (Math.floor(Math.random() * 3) + 1) * rowHeight - collectOffset
+  });
+
+  this.render();
+  this.shown = true;
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -149,6 +221,22 @@ function spawnNewEnemy() {
 }
 
 const player = new Player();
+
+const collectible = new Collectible();
+
+// toggle collectible every 5 seconds
+let timerId = setTimeout(toggleCollectible, 5000);
+
+function toggleCollectible() {
+  if (collectible.shown) {
+    collectible.hide();
+    timerId = setTimeout(toggleCollectible, 5000);
+  }
+  else {
+    collectible.show();
+    timerId = setTimeout(toggleCollectible, 10000);
+  }
+}
 
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');

@@ -149,6 +149,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        if (collectible.shown) collectible.render();
     }
 
     function checkCollisions(enemy, player) {
@@ -194,7 +195,10 @@ var Engine = (function(global) {
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Key.png',
+        'images/Star.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 
