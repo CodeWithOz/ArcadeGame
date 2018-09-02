@@ -149,7 +149,10 @@ var Engine = (function(global) {
         });
 
         player.render();
-        if (collectible.shown) collectible.render();
+        if (collectible.shown) {
+          collectible.render();
+          collectible.checkCollect(player);
+        }
     }
 
     function checkCollisions(enemy, player) {

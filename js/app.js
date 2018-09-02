@@ -207,6 +207,30 @@ Collectible.prototype.show = function() {
   this.shown = true;
 };
 
+Collectible.prototype.checkCollect = function(player) {
+  const { colWidth, rowHeight, rowOffset, collectOffset } = dimensions;
+
+  // collectible isn't moving
+  // exit if collectible and player are not in the same column
+  if (this.x !== player.x) return;
+
+  // collectOffset !== rowOffset
+  // that is, collectible's y offset is slightly different from that of player
+  // must account for this
+  const offsetDiff = rowOffset - collectOffset;
+
+  // now pretend player has the same offset as collectible
+  const playerTopEdge = player.y + offsetDiff;
+
+  // exit if they are not aligned
+  if (playerTopEdge !== this.y) return;
+
+  // they are aligned, player has collected it
+  // so reset the timer and hide the collectible
+  clearTimeout(timerId);
+  toggleCollectible();
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
