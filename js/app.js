@@ -77,6 +77,28 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Enemy.prototype.checkCollisions = function(player) {
+  const { colWidth, rowHeight, rowOffset } = dimensions;
+
+  // exit if enemy and player are not on the same row
+  if (this.y !== player.y) return;
+
+  // enemy moves from left to right
+  // collision happens when any part of enemy and player overlap
+  // x-position represents the top-left corner
+  const enemyRightEdge = this.x + colWidth;
+
+  const playerLeftEdge = player.x + player.horzPad;
+  const playerRightEdge = player.x + colWidth - player.horzPad;
+
+  // exit if enemy and player do not overlap
+  if (enemyRightEdge < playerLeftEdge || this.x > playerRightEdge) return;
+
+  // collision has happened
+  // so reset the player
+  player.update();
+}
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
