@@ -33,6 +33,7 @@ body {
   opacity: 0;
 }
 
+/* TODO: transition the form off the page to prevent the cursor from behaving like it's still on page */
 .game-choices {
   background: white;
   padding: 1em;
