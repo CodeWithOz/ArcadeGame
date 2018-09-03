@@ -1,3 +1,9 @@
+/* TODO: add polyfill for CSS variables */
+/* see https://github.com/jhildenbiddle/css-vars-ponyfill */
+:root {
+  --game-width: 800px;
+}
+
 body {
   text-align: center;
   font-family: cursive;
@@ -11,8 +17,8 @@ body {
   top: 0;
   left: 0;
 
-  /* place it above the canvas, which will be its sibling */
-  z-index: 1;
+  /* place it above its siblings */
+  z-index: 2;
 
   background: black; /* fallback background color */
   background: rgba(0, 0, 0, 0.5);
@@ -64,15 +70,18 @@ label {
   align-items: center;
 }
 
-button[name="start"] {
+button {
   border: 1px solid blue;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .game-container {
-  width: 800px;
+  width: var(--game-width);
   margin: auto;
+
+  /* enable custom placement of any children */
+  position: relative;
 
   /* TODO: add appropriate browser prefixes */
   display: flex;
@@ -97,6 +106,7 @@ button[name="start"] {
   font-size: 2em;
 }
 
+/* to be used wherever red text is needed */
 .red-text {
   color: red;
 }
@@ -134,4 +144,36 @@ button[name="start"] {
 
 .game-container .canvas {
   width: 70%;
+}
+
+.game-end {
+  /* initially off-screen */
+  position: absolute;
+  top: -999px;
+
+  /* cover the game-grid */
+  left: calc((var(--game-width) * 0.3)); /* left edge starts where metrics ends */
+  width: calc((var(--game-width) * 0.7)); /* same width as game grid section */
+  height: 100%; /* cover the full height of the grid */
+
+  /* place above game container but below choices modal */
+  z-index: 1;
+
+  background: white;
+
+  /* center contents */
+  /* TODO: add appropriate browser prefixes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: top 0.5s;
+}
+
+.shown {
+  top: 0;
+}
+
+.game-end .message {
+  font-size: 2em;
 }
