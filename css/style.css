@@ -60,3 +60,69 @@ button[name="start"] {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.game-container {
+  width: 800px;
+  margin: auto;
+
+  /* TODO: add appropriate browser prefixes */
+  display: flex;
+
+  /* vertically center child sections */
+  align-items: center;
+}
+
+.game-container .metrics {
+  width: 30%;
+
+  /* TODO: add appropriate browser prefixes */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* stack its immediate child sections vertically */
+  flex-flow: row wrap;
+}
+
+.metrics .timer {
+  font-size: 2em;
+}
+
+.red-text {
+  color: red;
+}
+
+.collectibles {
+  margin: 1.5em 0 0;
+  width: 70%;
+}
+
+.collectibles .collectible {
+  /* TODO: add appropriate browser prefixes */
+  display: flex;
+
+  /* place both immediate child sections side by side */
+  flex-flow: row nowrap;
+}
+
+.collectible div {
+  width: 50%;
+}
+
+.collectible img {
+  width: 100%;
+}
+
+.collectible p {
+  font-size: 1.2em;
+  width: 50%;
+
+  /* TODO: add appropriate browser prefixes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-container .canvas {
+  width: 70%;
+}

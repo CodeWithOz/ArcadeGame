@@ -20,13 +20,15 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
+        docFrag = doc.createDocumentFragment(),
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    docFrag.append(canvas);
+    doc.querySelector('.canvas').appendChild(docFrag);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
