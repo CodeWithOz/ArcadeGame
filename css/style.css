@@ -25,19 +25,27 @@ body {
 
   opacity: 1;
 
-  transition: background 0.3s, opacity 0.3s;
+  transition: background 0.5s, opacity 0.5s;
 }
 
-.overlay.hidden {
+.hidden {
   background: rgba(0, 0, 0, 0);
   opacity: 0;
 }
 
-/* TODO: transition the form off the page to prevent the cursor from behaving like it's still on page */
 .game-choices {
   background: white;
   padding: 1em;
   border-radius: 10px;
+
+  /* enable off screen transition for when it's hidden */
+  position: relative;
+  top: 0;
+  transition: top 0.5s;
+}
+
+.hidden .game-choices {
+  top: -999px;
 }
 
 fieldset:not(:last-child) {
