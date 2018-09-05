@@ -191,6 +191,14 @@ const Collectible = function() {
 
   this.type;
   this.sprite;
+
+  // record how many the player has collected
+  this.collected = {
+    star: 0,
+    key: 0,
+    heart: 0,
+    total: 0
+  };
 };
 
 Collectible.prototype.setSprite = function() {
@@ -269,6 +277,8 @@ Collectible.prototype.checkCollect = function(player) {
   // they are aligned, player has collected it
   // so reset the timer and hide the collectible
   clearTimeout(timerId);
+  this.collected[this.type]++;
+  this.collected.total++;
   toggleCollectible();
 }
 
