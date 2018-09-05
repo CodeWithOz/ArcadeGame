@@ -369,7 +369,7 @@ choicesForm.addEventListener('submit', event => {
     curMins = curMins !== minutesRemaining ? minutesRemaining : curMins;
     updateTimer(curHrs, curMins, curSecs);
 
-    if (curSecs === 0 && curMins === 0) {
+    if (curSecs <= 0 && curMins <= 0) {
       // timer has expired
       clearInterval(countdownTimerId);
 
