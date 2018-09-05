@@ -347,64 +347,48 @@ choicesForm.addEventListener('submit', event => {
   }
   player.updateIcon(iconChoice);
 
-  // handle time choice
-  let timedChoice;
-  const options = [...choicesForm.querySelectorAll('input[name="timed"]')];
-  for (const option of options) {
-    if (option.checked) {
-      timedChoice = option.value;
-      break;
-    }
-  }
+  // initiate the timer at 2 minutes
+  let curHrs = 0;
+  let curMins = 2;
+  let curSecs = 0;
+  updateTimer(curHrs, curMins, curSecs);
 
-  if (timedChoice === 'yes') {
-    // initiate the timer at 2 minutes
-    let curHrs = 0;
-    let curMins = 2;
-    let curSecs = 0;
+  let start = Date.now();
+  const countdownTimerId = setInterval(() => {
+    const now = Date.now();
+    const secondsElapsed = Math.floor((now - start) / 1000);
+    curSecs = 60 - (secondsElapsed % 60);
+    if (curSecs === 60) curSecs = 0;
+    // math explanation
+    // 'secondsElapsed % 60' ensures that we always deal with 0 - 60s
+
+    const minutesElapsed = Math.ceil(secondsElapsed / 60);
+    const minutesRemaining = 2 - minutesElapsed;
+
+    // update minutes only if it has changed
+    curMins = curMins !== minutesRemaining ? minutesRemaining : curMins;
     updateTimer(curHrs, curMins, curSecs);
 
-    // display timer in red
-    timer.classList.add('red-text');
+    if (curSecs === 0 && curMins === 0) {
+      // timer has expired
+      clearInterval(countdownTimerId);
 
-    let start = Date.now();
-    const countdownTimerId = setInterval(() => {
-      const now = Date.now();
-      const secondsElapsed = Math.floor((now - start) / 1000);
-      curSecs = 60 - (secondsElapsed % 60);
-      if (curSecs === 60) curSecs = 0;
-      // math explanation
-      // 'secondsElapsed % 60' ensures that we always deal with 0 - 60s
-
-      const minutesElapsed = Math.ceil(secondsElapsed / 60);
-      const minutesRemaining = 2 - minutesElapsed;
-
-      // update minutes only if it has changed
-      curMins = curMins !== minutesRemaining ? minutesRemaining : curMins;
-      updateTimer(curHrs, curMins, curSecs);
-
-      if (curSecs === 0 && curMins === 0) {
-        // timer has expired
-        clearInterval(countdownTimerId);
-
-        totalCollectibles.textContent = collectible.collected.total;
-        // decide on game ending message
-        if (collectible.collected.total < 10) {
-          gameEndingMessage.classList.add('red-text');
-          gameEndingMessage.classList.remove('green-text');
-          gameEndingMessage.textContent = '... Better luck next time! 👍';
-        } else {
-          gameEndingMessage.classList.add('green-text');
-          gameEndingMessage.classList.remove('red-text');
-          gameEndingMessage.textContent = 'You won! Congrats!! 🎉🙌';
-        }
-
-        // show the modal
-        toggleGameEndingModal();
+      totalCollectibles.textContent = collectible.collected.total;
+      // decide on game ending message
+      if (collectible.collected.total < 10) {
+        gameEndingMessage.classList.add('red-text');
+        gameEndingMessage.classList.remove('green-text');
+        gameEndingMessage.textContent = '... Better luck next time! 👍';
+      } else {
+        gameEndingMessage.classList.add('green-text');
+        gameEndingMessage.classList.remove('red-text');
+        gameEndingMessage.textContent = 'You won! Congrats!! 🎉🙌';
       }
-    }, 1000);
-  }
-  // TODO: handle untimed game
+
+      // show the modal
+      toggleGameEndingModal();
+    }
+  }, 1000);
 
   // dismiss choices overlay
   toggleChoicesOverlay();
