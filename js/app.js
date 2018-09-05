@@ -275,10 +275,16 @@ Collectible.prototype.checkCollect = function(player) {
   if (playerTopEdge !== this.y) return;
 
   // they are aligned, player has collected it
-  // so reset the timer and hide the collectible
+  // so reset the timer
   clearTimeout(collectibleTimerId);
+
+  // increment the collectible counters
   this.collected[this.type]++;
   this.collected.total++;
+
+  // update the scorecard's collectibles counters
+  document.querySelector(`.${this.type}`).textContent = this.collected[this.type];
+
   toggleCollectible();
 }
 
