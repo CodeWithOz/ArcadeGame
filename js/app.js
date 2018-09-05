@@ -322,6 +322,7 @@ const timer = document.querySelector('.timer');
 let [ hours, minutes, seconds ] = [...timer.children];
 
 const gameEndingModal = document.querySelector('.game-end');
+let gameEndingMessage = gameEndingModal.querySelector('.message');
 
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');
@@ -377,6 +378,19 @@ choicesForm.addEventListener('submit', event => {
       if (minutes === 0) {
         // timer has expired
         clearInterval(countdownTimerId);
+
+        // decide on game ending message
+        if (collectible.collected.total < 10) {
+          gameEndingMessage.classList.add('red-text');
+          gameEndingMessage.classList.remove('green-text');
+          gameEndingMessage.textContent = '... Better luck next time! 👍';
+        } else {
+          gameEndingMessage.classList.add('green-text');
+          gameEndingMessage.classList.remove('red-text');
+          gameEndingMessage.textContent = 'You won! Congrats!! 🎉🙌';
+        }
+
+        // show the modal
         gameEndingModal.classList.add('shown');
       }
     }, 1000);

@@ -108,7 +108,7 @@ button {
 
 /* to be used wherever red text is needed */
 .red-text {
-  color: red;
+  color: #ff1f1f;
 }
 
 .collectibles {
@@ -176,4 +176,9 @@ button {
 
 .game-end .message {
   font-size: 2em;
+}
+
+/* to be used wherever green text is needed */
+.green-text {
+  color: #3bbe00;
 }
