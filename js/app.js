@@ -318,7 +318,10 @@ function toggleCollectible() {
 let arrowsActive = false;
 
 // timer components
-let [ hours, minutes, seconds ] = [...document.querySelector('.timer').children];
+const timer = document.querySelector('.timer');
+let [ hours, minutes, seconds ] = [...timer.children];
+
+const gameEndingModal = document.querySelector('.game-end');
 
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');
@@ -353,6 +356,9 @@ choicesForm.addEventListener('submit', event => {
     seconds = 0;
     updateTimer(hours, minutes, seconds);
 
+    // display timer in red
+    timer.classList.add('red-text');
+
     let start = Date.now();
     const countdownTimerId = setInterval(() => {
       const now = Date.now();
@@ -371,6 +377,7 @@ choicesForm.addEventListener('submit', event => {
       if (minutes === 0) {
         // timer has expired
         clearInterval(countdownTimerId);
+        gameEndingModal.classList.add('shown');
       }
     }, 1000);
 
