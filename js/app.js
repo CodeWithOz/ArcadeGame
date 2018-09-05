@@ -341,8 +341,9 @@ choicesForm.addEventListener('submit', event => {
   }
   player.updateIcon(iconChoice);
 
+  // handle time choice
   let timedChoice;
-  const options = [...choicesForm.querySelectorAll('input[name="player"]')];
+  const options = [...choicesForm.querySelectorAll('input[name="timed"]')];
   for (const option of options) {
     if (option.checked) {
       timedChoice = option.value;
@@ -352,10 +353,10 @@ choicesForm.addEventListener('submit', event => {
 
   if (timedChoice === 'yes') {
     // initiate the timer at 2 minutes
-    hours = 0;
-    minutes = 2;
-    seconds = 0;
-    updateTimer(hours, minutes, seconds);
+    let curHrs = 0;
+    let curMins = 2;
+    let curSecs = 0;
+    updateTimer(curHrs, curMins, curSecs);
 
     // display timer in red
     timer.classList.add('red-text');
@@ -363,8 +364,8 @@ choicesForm.addEventListener('submit', event => {
     let start = Date.now();
     const countdownTimerId = setInterval(() => {
       const now = Date.now();
-      const secondsElapsed = (now - start) / 1000;
-      seconds = 60 - (secondsElapsed % 60);
+      const secondsElapsed = Math.floor((now - start) / 1000);
+      curSecs = 60 - (secondsElapsed % 60);
       // math explanation
       // 'secondsElapsed % 60' ensures that we always deal with 0 - 60s
 
@@ -372,10 +373,10 @@ choicesForm.addEventListener('submit', event => {
       const minutesRemaining = 2 - minutesElapsed;
 
       // update minutes only if it has changed
-      minutes = minutes !== minutesRemaining ? minutesRemaining : minutes;
-      updateTimer(hours, minutes, seconds);
+      curMins = curMins !== minutesRemaining ? minutesRemaining : curMins;
+      updateTimer(curHrs, curMins, curSecs);
 
-      if (minutes === 0) {
+      if (curMins === 0) {
         // timer has expired
         clearInterval(countdownTimerId);
 
