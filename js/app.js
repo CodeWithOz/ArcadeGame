@@ -276,7 +276,7 @@ Collectible.prototype.checkCollect = function(player) {
 
   // they are aligned, player has collected it
   // so reset the timer and hide the collectible
-  clearTimeout(timerId);
+  clearTimeout(collectibleTimerId);
   this.collected[this.type]++;
   this.collected.total++;
   toggleCollectible();
@@ -301,21 +301,24 @@ const player = new Player();
 const collectible = new Collectible();
 
 // toggle collectible every 5 seconds
-let timerId = setTimeout(toggleCollectible, 5000);
+let collectibleTimerId = setTimeout(toggleCollectible, 5000);
 
 function toggleCollectible() {
   if (collectible.shown) {
     collectible.hide();
-    timerId = setTimeout(toggleCollectible, 5000);
+    collectibleTimerId = setTimeout(toggleCollectible, 5000);
   }
   else {
     collectible.show();
-    timerId = setTimeout(toggleCollectible, 10000);
+    collectibleTimerId = setTimeout(toggleCollectible, 10000);
   }
 }
 
-// regulate when arrow keys can be used
+// flag for regulating when arrow keys can be used
 let arrowsActive = false;
+
+// timer components
+let [ hours, minutes, seconds ] = [...document.querySelector('.timer').children];
 
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');
@@ -323,17 +326,56 @@ choicesForm.addEventListener('submit', event => {
   event.preventDefault();
 
   // get the selected player icon
-  let playerChoice;
+  let iconChoice;
   const icons = [...choicesForm.querySelectorAll('input[name="player"]')];
   for (const icon of icons) {
     if (icon.checked) {
-      playerChoice = icon.value;
+      iconChoice = icon.value;
       break;
     }
   }
-  player.updateIcon(playerChoice);
+  player.updateIcon(iconChoice);
 
   // TODO: handle time choice
+  let timedChoice;
+  const options = [...choicesForm.querySelectorAll('input[name="player"]')];
+  for (const option of options) {
+    if (option.checked) {
+      timedChoice = option.value;
+      break;
+    }
+  }
+
+  if (timedChoice === 'yes') {
+    // initiate the timer at 2 minutes
+    hours = 0;
+    minutes = 2;
+    seconds = 0;
+    updateTimer(hours, minutes, seconds);
+
+    let start = Date.now();
+    const countdownTimerId = setInterval(() => {
+      const now = Date.now();
+      const secondsElapsed = (now - start) / 1000;
+      seconds = 60 - (secondsElapsed % 60);
+      // math explanation
+      // 'secondsElapsed % 60' ensures that we always deal with 0 - 60s
+
+      const minutesElapsed = Math.ceil(secondsElapsed / 60);
+      const minutesRemaining = 2 - minutesElapsed;
+
+      // update minutes only if it has changed
+      minutes = minutes !== minutesRemaining ? minutesRemaining : minutes;
+      updateTimer(hours, minutes, seconds);
+
+      if (minutes === 0) {
+        // timer has expired
+        clearInterval(countdownTimerId);
+      }
+    }, 1000);
+
+    // reduce time each second
+  }
 
   // dismiss choices overlay
   choicesForm.parentElement.parentElement.parentElement.classList.add('hidden');
@@ -341,6 +383,16 @@ choicesForm.addEventListener('submit', event => {
   // activate arrow keys
   arrowsActive = true;
 });
+
+function updateTimer(hour, minute, second) {
+  hour = String(hour).padStart(2, '0');
+  minute = String(minute).padStart(2, '0');
+  second = String(second).padStart(2, '0');
+
+  hours.textContent = hour;
+  minutes.textContent = minute;
+  seconds.textContent = second;
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
