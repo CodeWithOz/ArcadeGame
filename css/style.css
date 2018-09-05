@@ -174,7 +174,8 @@ button {
   top: 0;
 }
 
-.game-end .message {
+.game-end .message,
+.game-end .total {
   font-size: 2em;
 }
 
