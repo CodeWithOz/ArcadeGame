@@ -463,6 +463,9 @@ gameEndingModal.querySelector('button').addEventListener('click', event => {
     total: 0
   };
 
+  // deactivate arrow keys
+  arrowsActive = false;
+
   // reset the player's position
   player.update();
   player.render();
