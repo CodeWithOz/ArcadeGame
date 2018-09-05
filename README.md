@@ -1,3 +1,30 @@
+# Arcade Game #
+This project is part of the Udacity Frontend Nanodegree program.
+
+## Live Demo ##
+* [Click here](https://codewithoz.github.io/ArcadeGame/)
+* Or copy and paste this URL into your browser: https://codewithoz.github.io/ArcadeGame/
+
+## Instructions ##
+This game can be run with relatively little effort.
+Run `git clone https://github.com/CodeWithOz/ArcadeGame.git` to copy it into
+your local environment. Then open the `index.html` file in your browser and
+**_VOILA_**! 😄🎉
+
+The rules are simple: collect stars, keys, and hearts as they pop up on the grid.
+To win, you must collect 10 or more before the timer runs out.
+You can safely keep your character in the water (blue grid blocks) or on the
+grass (green grid blocks); no enemies will attack you in those positions.
+
+## Contributing ##
+Feel free to make your contributions! You can start with any of the TODOs I
+have this placed in the project files.
+
+## License ##
+MIT
+
+# Original README.md #
+
 frontend-nanodegree-arcade-game
 ===============================
 
