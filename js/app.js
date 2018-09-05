@@ -400,14 +400,14 @@ choicesForm.addEventListener('submit', event => {
         }
 
         // show the modal
-        gameEndingModal.classList.add('shown');
+        toggleGameEndingModal();
       }
     }, 1000);
   }
   // TODO: handle untimed game
 
   // dismiss choices overlay
-  choicesForm.parentElement.parentElement.parentElement.classList.add('hidden');
+  toggleChoicesOverlay();
 
   // activate arrow keys
   arrowsActive = true;
@@ -423,6 +423,14 @@ function updateTimer(hour, minute, second) {
   seconds.textContent = second;
 }
 
+function toggleGameEndingModal() {
+  gameEndingModal.classList.toggle('shown');
+}
+
+function toggleChoicesOverlay() {
+  choicesForm.parentElement.parentElement.parentElement.classList.toggle('hidden');
+}
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -434,4 +442,30 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+// restart the game when the user clicks the button
+gameEndingModal.querySelector('button').addEventListener('click', event => {
+  // reset the scorecard
+  // I could simply search the DOM for the `count` class
+  // However, I believe this method is more performant because it only
+  // searches the necessary part of the DOM
+  for (const collectibleType of [...timer.nextElementSibling.children]) {
+    const count = collectibleType.querySelector('.count');
+    count.textContent = 0;
+  }
+
+  // reset the collectible instance' records
+  collectible.collected = {
+    star: 0,
+    key: 0,
+    heart: 0,
+    total: 0
+  };
+
+  // hide game-ending modal
+  toggleGameEndingModal();
+
+  // show intro modal
+  toggleChoicesOverlay();
 });
