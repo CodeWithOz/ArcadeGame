@@ -329,7 +329,7 @@ let [ hours, minutes, seconds ] = [...timer.children];
 
 const gameEndingModal = document.querySelector('.game-end');
 let gameEndingMessage = gameEndingModal.querySelector('.message');
-let totalCollectibles = gameEndingModal.querySelector('.total');
+let totalCollectibles = gameEndingModal.querySelector('.total span');
 
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');
