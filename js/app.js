@@ -372,6 +372,7 @@ choicesForm.addEventListener('submit', event => {
       const now = Date.now();
       const secondsElapsed = Math.floor((now - start) / 1000);
       curSecs = 60 - (secondsElapsed % 60);
+      if (curSecs === 60) curSecs = 0;
       // math explanation
       // 'secondsElapsed % 60' ensures that we always deal with 0 - 60s
 
