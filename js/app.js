@@ -463,6 +463,10 @@ gameEndingModal.querySelector('button').addEventListener('click', event => {
     total: 0
   };
 
+  // reset the player's position
+  player.update();
+  player.render();
+
   // hide game-ending modal
   toggleGameEndingModal();
 
