@@ -323,6 +323,7 @@ let [ hours, minutes, seconds ] = [...timer.children];
 
 const gameEndingModal = document.querySelector('.game-end');
 let gameEndingMessage = gameEndingModal.querySelector('.message');
+let totalCollectibles = gameEndingModal.querySelector('.total');
 
 // handle player's game choices
 const choicesForm = document.querySelector('.choices');
@@ -340,7 +341,6 @@ choicesForm.addEventListener('submit', event => {
   }
   player.updateIcon(iconChoice);
 
-  // TODO: handle time choice
   let timedChoice;
   const options = [...choicesForm.querySelectorAll('input[name="player"]')];
   for (const option of options) {
@@ -379,6 +379,7 @@ choicesForm.addEventListener('submit', event => {
         // timer has expired
         clearInterval(countdownTimerId);
 
+        totalCollectibles.textContent = collectible.collected.total;
         // decide on game ending message
         if (collectible.collected.total < 10) {
           gameEndingMessage.classList.add('red-text');
@@ -394,9 +395,8 @@ choicesForm.addEventListener('submit', event => {
         gameEndingModal.classList.add('shown');
       }
     }, 1000);
-
-    // reduce time each second
   }
+  // TODO: handle untimed game
 
   // dismiss choices overlay
   choicesForm.parentElement.parentElement.parentElement.classList.add('hidden');
