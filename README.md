@@ -1,11 +1,16 @@
-# Arcade Game #
+# Arcade Game
+
 This project is part of the Udacity Frontend Nanodegree program.
 
-## Live Demo ##
-* [Click here](https://codewithoz.github.io/ArcadeGame/)
-* Or copy and paste this URL into your browser: https://codewithoz.github.io/ArcadeGame/
+![Arcade Game animated gif](images/ArcadeGame.gif)
 
-## Instructions ##
+## Live Demo
+
+- [Click here](https://codewithoz.github.io/ArcadeGame/)
+- Or copy and paste this URL into your browser: https://codewithoz.github.io/ArcadeGame/
+
+## Instructions
+
 This game can be run with relatively little effort.
 Run `git clone https://github.com/CodeWithOz/ArcadeGame.git` to copy it into
 your local environment. Then open the `index.html` file in your browser and
@@ -16,17 +21,18 @@ To win, you must collect 10 or more before the timer runs out.
 You can safely keep your character in the water (blue grid blocks) or on the
 grass (green grid blocks); no enemies will attack you in those positions.
 
-## Contributing ##
+## Contributing
+
 Feel free to make your contributions! You can start with any of the TODOs I
 have this placed in the project files.
 
-## License ##
+## License
+
 MIT
 
-# Original README.md #
+# Original README.md
 
-frontend-nanodegree-arcade-game
-===============================
+# frontend-nanodegree-arcade-game
 
 Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
 
